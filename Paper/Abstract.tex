@@ -149,7 +149,7 @@
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\linewidth, height=7.5cm]{Images/image_4.png}
+		\includegraphics[width=\linewidth, height=4.5cm]{Images/image_4.png}
 		\caption{The general architecture of MobileNetV3, illustrating the inverted residual linear bottleneck blocks that enable its computational efficiency \cite{Qian2021MobileNetV3FI}}
 		\label{fig:mobilenet_architec}
 	\end{figure}
@@ -189,7 +189,15 @@
 	We chose Swin2SR \cite{conde2022swin2sr} as the backbone architecture for this module. Swin2SR combines the hierarchical Swin Transformer V2 architecture with compression super-resolution targets, making it ideal for our constraints:
 	\begin{enumerate}
 		\item \textbf{Efficiency}: It is designed for efficient processing, suitable for the requirements of a multi-stage pipeline.
+		\item \textbf{Text Preservation}: Swin2SR has been shown to perform well at reproducing detail from low-resolution, blurry, noisy inputs—exactly the types of errors our QAM is designed to detect.
 	\end{enumerate}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth]{Images/img_m3_pipeline.png}
+		\caption{The pipeline of license plate restoration image.}
+		\label{fig:module3_pipeline}
+	\end{figure}
 	
 	\subsection{\textit{Character Recognition and Retrieval (Module 4)}}
 	
@@ -204,6 +212,17 @@
 	
 	
 	\section{CONCLUSION}
+	
+	\subsection{Conclusion}
+	This research presented a novel, adaptive deep learning framework for Automatic License Plate Recognition (ALPR) specifically tailored to the diverse and challenging context of Vietnamese traffic environments. Unlike traditional monolithic pipelines, our proposed system introduces a lightweight Quality Assessment Module (QAM) that functions as an intelligent router. By dynamically classifying inputs as "clear," "restorable," or "unrestorable," the system optimizes computational resources—selectively applying the computationally intensive Swin2SR restoration only when necessary.
+	
+	Experimental results demonstrate that this multi-task approach significantly improves OCR accuracy on degraded inputs (blurred, glared, or skewed plates) compared to baseline methods, while maintaining high throughput for clean data. The integration of PARSeq further enhances robustness against character-level distortions, validating the effectiveness of the proposed end-to-end adaptive pipeline.
+	
+	\subsection{Limitations}
+	Despite the promising results, the current framework has certain limitations. First, the Conditional Restoration Module (Module 3) relies heavily on synthetic data for training due to the scarcity of paired real-world degraded/clean license plate datasets. While effective, synthetic degradations may not perfectly model complex real-world artifacts such as heterogeneous weather conditions (e.g., heavy rain streaks). Second, although the routing mechanism saves resources, the restoration backbone itself (Swin2SR) is still relatively computationally demanding compared to simple interpolation methods, which may pose latency challenges on extremely low-power edge devices.
+	
+	\subsection{Future Work}
+	Future work will focus on bridging the gap between synthetic and real-world domains by collecting a larger-scale dataset of real-world degraded plates. Additionally, we aim to optimize the inference efficiency of the restoration module using model quantization and pruning techniques (e.g., TensorRT optimization) to facilitate deployment on constrained edge computing platforms. Finally, extending the framework to incorporate temporal information from video streams could further improve detection and recognition stability in dynamic traffic flow scenarios.
 	
 	\section{REFERENCES}	
 	\begingroup
